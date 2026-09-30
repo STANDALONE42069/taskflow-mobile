@@ -42,7 +42,7 @@ spec:
           memory: 1Gi
         limits:
           cpu: "2"
-          memory: 3Gi
+          memory: 5Gi
     - name: osv-scanner
       image: localhost:5001/taskflow-lab10-osv:1
       command: ["/bin/sh", "-c", "sleep infinity"]
