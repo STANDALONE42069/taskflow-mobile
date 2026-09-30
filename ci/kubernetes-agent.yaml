@@ -30,9 +30,12 @@ spec:
         - name: GIT_CONFIG_VALUE_0
           value: /sdks/flutter
       securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
         allowPrivilegeEscalation: false
         capabilities:
           drop: ["ALL"]
+          add: ["DAC_OVERRIDE"]
       resources:
         requests:
           cpu: 500m
