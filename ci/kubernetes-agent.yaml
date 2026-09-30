@@ -20,6 +20,15 @@ spec:
       image: ghcr.io/cirruslabs/flutter:3.44.0
       command: ["bash", "-lc", "cat"]
       tty: true
+      env:
+        - name: HOME
+          value: /home/jenkins/agent
+        - name: GIT_CONFIG_COUNT
+          value: "1"
+        - name: GIT_CONFIG_KEY_0
+          value: safe.directory
+        - name: GIT_CONFIG_VALUE_0
+          value: /sdks/flutter
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
