@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: jenkins-agents
+  labels:
+    app.kubernetes.io/part-of: taskflow-lab10
+spec:
+  serviceAccountName: jenkins-agent
+  automountServiceAccountToken: false
+  restartPolicy: Never
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: flutter
+      image: ghcr.io/cirruslabs/flutter:3.44.0
+      command: ["bash", "-lc", "cat"]
+      tty: true
+      env:
+        - name: HOME
+          value: /home/jenkins/agent
+        - name: GIT_CONFIG_COUNT
+          value: "1"
+        - name: GIT_CONFIG_KEY_0
+          value: safe.directory
+        - name: GIT_CONFIG_VALUE_0
+          value: /sdks/flutter
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+          add: ["DAC_OVERRIDE"]
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: "2"
+          memory: 5Gi
+    - name: osv-scanner
+      image: localhost:5001/taskflow-lab10-osv:1
+      command: ["/bin/sh", "-c", "sleep infinity"]
+      tty: true
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: "1"
+          memory: 512Mi
