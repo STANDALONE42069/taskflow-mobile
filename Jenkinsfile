@@ -92,6 +92,7 @@ pipeline {
                         test -s "$ANDROID_KEYSTORE_FILE"
                         keytool -list -keystore "$ANDROID_KEYSTORE_FILE" \
                             -storepass "$ANDROID_STORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" >/dev/null
+                        (cd android && ./gradlew --stop)
                         flutter build appbundle --release --no-pub --build-number="$BUILD_NUMBER"
                     '''
                 }
